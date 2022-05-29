@@ -14,10 +14,64 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var LoginWithUsername = /** @class */ (function () {
+    function LoginWithUsername() {
+    }
+    LoginWithUsername.prototype.login = function (loginCredentials) {
+        var username = loginCredentials['username'];
+        var password = loginCredentials['password'];
+        if (username || password) {
+            throw new Error('Username or password is missing');
+        }
+        // if(username === 'admin' && password === 'admin'){
+        //     return true;
+        // }
+        // return false;
+        return true;
+    };
+    return LoginWithUsername;
+}());
+var LoginWithEmailAndPassword = /** @class */ (function () {
+    function LoginWithEmailAndPassword() {
+    }
+    LoginWithEmailAndPassword.prototype.login = function (loginCredentials) {
+        var email = loginCredentials['email'];
+        var password = loginCredentials['password'];
+        if (email || password) {
+            throw new Error('Email or password is missing');
+        }
+        // if(email === 'arafat@gmail.com' && password === 'arafat'){
+        //     return true;
+        // }
+        // return false;
+        return true;
+    };
+    return LoginWithEmailAndPassword;
+}());
+var LoginWithIdAndPassword = /** @class */ (function () {
+    function LoginWithIdAndPassword() {
+    }
+    LoginWithIdAndPassword.prototype.login = function (loginCredentials) {
+        var id = loginCredentials['id'];
+        var password = loginCredentials['password'];
+        if (id || password) {
+            throw new Error('Id or password is missing');
+        }
+        // if(id === '1' && password === 'arafat'){
+        //     return true;
+        // }
+        // return false;
+        return true;
+    };
+    return LoginWithIdAndPassword;
+}());
 var Logger = /** @class */ (function () {
     function Logger(user) {
         Logger.userDetails = user;
     }
+    Logger.setLoginStraegy = function (loginStrategy) {
+        Logger.loginStrategy = loginStrategy;
+    };
     Logger.logIn = function (user) {
         if (Logger.loggedInuser != null) {
             return Logger.loggedInuser;
@@ -157,13 +211,17 @@ function ChargeComputer(computer) {
 // TestComputer(computer1);
 // let computer2 = new ChargeableComputer(new inputDataFromKeyboard(), new inMemoryy(), new CPU(), new Errors(), new Monitor());
 // ChargeComputer(computer2);
-// Logger.logIn({name: "John", password: '12345'});
-// console.log(Logger.getLoggedInUser());
-// Logger.logOut();
-// Logger.logIn({name: "Arafat", password: '12345'});
-// console.log(Logger.getLoggedInUser());
-// Logger.logIn({name: "Brisa", password: '12345'});
-// console.log(Logger.getLoggedInUser());
+// Immediately invoking the function to test the class. Define the function in the first ()
+(function testLogger() {
+    Logger.setLoginStraegy(new LoginWithIdAndPassword());
+    Logger.logIn({ id: 1, password: 'arafat' });
+    console.log(Logger.getLoggedInUser());
+    Logger.logOut();
+    Logger.setLoginStraegy(new LoginWithEmailAndPassword());
+    Logger.logIn({ email: 'arafat@gmail.com', password: 'arafat' });
+    console.log(Logger.getLoggedInUser());
+    Logger.logOut();
+})();
 var SecureComputer = /** @class */ (function (_super) {
     __extends(SecureComputer, _super);
     function SecureComputer(inputDevice, memory, processor, errors, displayDevice) {
@@ -178,24 +236,7 @@ var SecureComputer = /** @class */ (function (_super) {
     };
     return SecureComputer;
 }(Computer));
-// function SecureComp(computer:SecureComputer){
-//     computer.input();
-//     computer.store('Data is being stored');
-//     computer.retrieve('Data is being retrieved');
-//     computer.process('Data processing happening');
-//     computer.display('Displaying on monitor');
-//     computer.handleError('');
-//     computer.setLogger(Logger.logIn({name: "John", password: '12345'}));
-//     console.log(computer.getLogger());
-//     computer.setLogger(Logger.getLoggedInUser());
-//     console.log(computer.getLogger());
-//     // computer.setLogger(Logger.logOut());
-//     // console.log(computer.getLogger());
-// }
-var computer3 = new SecureComputer(new inputDataFromKeyboard(), new inMemoryy(), new CPU(), new Errors(), new Monitor());
-// SecureComp(computer3);
-computer3.setLogger({ name: 'Nina', password: '12345' });
-console.log(computer3.getLogger());
-// let secureComputer = new SecureComputer(new inputDataFromKeyboard(), new inMemoryy(), new CPU(), new Errors(), new Monitor());
-// secureComputer.setLogger(new Logger({name: "John", password: '12345'}));
-// console.log(secureComputer.getLogger());
+var secureComputer = new SecureComputer(new inputDataFromKeyboard(), new inMemoryy(), new CPU(), new Errors(), new Monitor());
+secureComputer.setLogger(Logger.logIn({ id: 1, password: 'arafat' }));
+// let computer3 = new SecureComputer(new inputDataFromKeyboard(), new inMemoryy(), new CPU(), new Errors(), new Monitor());
+// computer3.setLogger(Logger.logIn({email: "arafat@gmail.com", password: 'arafat'}));
